@@ -1,20 +1,54 @@
+import os
 import traceback
 import logging
+import tkinter
 
 from logging.config import fileConfig
 from datetime import datetime
+from time import time
 from typing import Union
 
 
+class UiLogger(logging.Handler):
+
+    def __init__(self, textbox):
+        logging.Handler.__init__(self)
+        self.textbox = textbox
+        self.textbox.configure(state="disabled")
+
+    def emit(self, text):
+        self.textbox.configure(state="normal")
+        self.textbox.insert(tkinter.END, self.format(text) + "\n")
+        self.textbox.see(tkinter.END)
+        self.textbox.configure(state="disabled")
+
+    def flush(self):
+        pass
+
+
 class Logger:
-    def __init__(self, name: str, path: str = None):
+    def __init__(self, name: str, path: str = None, widget = None):
         if path is not None:
             fileConfig(path)
         else:
             fileConfig(f"../../modules/logger/config.ini")
         self.logger = logging.getLogger(name)
+        if widget is not None:
+            log_handler = UiLogger(widget)
+            self.logger.addHandler(log_handler)
         self.werkzeug = logging.getLogger("werkzeug")
         self.werkzeug.setLevel(logging.ERROR)
+
+    def recycleLogs(self, clear: bool = False):
+        for root, dirs, files in os.walk(".\\"):
+            for file in files:
+                if file.endswith(".log"):
+                    olf = os.path.join(root, file)
+                    if clear:
+                        os.remove(olf)
+                    else:
+                        nlf = os.path.join(root, f"logger.{int(time())}.log")
+                        os.rename(olf, nlf)
 
     @staticmethod
     def ProcessMsg(msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
