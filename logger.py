@@ -51,7 +51,7 @@ class Logger:
                         os.rename(olf, nlf)
 
     @staticmethod
-    def ProcessMsg(msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
+    def ProcessMsg(self, msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
         """
         Build Message
 
@@ -77,7 +77,7 @@ class Logger:
         else:
             return retMsg[:-2]
 
-    def Critical(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def critical(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Write Critical Log
 
@@ -91,7 +91,7 @@ class Logger:
             msg = self.ProcessMsg(strMsg, kvStrMsg, 'No Traceback')
         self.logger.critical(msg)
 
-    def Error(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def error(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Write Error Log
 
@@ -105,7 +105,7 @@ class Logger:
             msg = self.ProcessMsg(strMsg, kvStrMsg, 'No Traceback')
         self.logger.error(msg)
 
-    def Warn(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def warn(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Write Warning Log
 
@@ -115,7 +115,7 @@ class Logger:
         msg = self.ProcessMsg(strMsg, kvStrMsg)
         self.logger.warning(msg)
 
-    def Debug(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def debug(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Write Debugging Log
 
@@ -125,7 +125,7 @@ class Logger:
         msg = self.ProcessMsg(strMsg, kvStrMsg)
         self.logger.debug(msg)
 
-    def Info(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def info(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Write Information Log
 
@@ -135,7 +135,7 @@ class Logger:
         msg = self.ProcessMsg(strMsg, kvStrMsg)
         self.logger.info(msg)
 
-    def Console(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
+    def console(self, *strMsg: Union[str, int, float], **kvStrMsg: Union[str, int, float]):
         """
         Print Log To Console
 
