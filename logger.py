@@ -51,7 +51,7 @@ class Logger:
                         os.rename(olf, nlf)
 
     @staticmethod
-    def ProcessMsg(self, msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
+    def ProcessMsg(msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
         """
         Build Message
 
