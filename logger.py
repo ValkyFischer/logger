@@ -1,3 +1,4 @@
+import configparser
 import os
 import traceback
 import logging
@@ -36,8 +37,13 @@ class Logger:
         if widget is not None:
             log_handler = UiLogger(widget)
             self.logger.addHandler(log_handler)
-        self.werkzeug = logging.getLogger("werkzeug")
-        self.werkzeug.setLevel(logging.ERROR)
+
+        config = configparser.ConfigParser()
+        config.read(path)
+        disabled = config['loggers']['disabled'].split(",")
+        for logger in disabled:
+            no_log = logging.getLogger(logger)
+            no_log.setLevel(logging.ERROR)
 
     def recycleLogs(self, clear: bool = False):
         for root, dirs, files in os.walk(".\\"):
