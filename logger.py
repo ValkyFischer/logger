@@ -28,15 +28,12 @@ class UiLogger(logging.Handler):
 
 
 class Logger:
-    def __init__(self, name: str, path: str = None, widget = None):
-        if path is not None:
-            fileConfig(path)
-        else:
-            fileConfig(f"../../modules/logger/config.ini")
+    def __init__(self, name: str, path: str = None):
+
+        if path is None:
+            path = "./modules/logger/config.ini"
+        fileConfig(path)
         self.logger = logging.getLogger(name)
-        if widget is not None:
-            log_handler = UiLogger(widget)
-            self.logger.addHandler(log_handler)
 
         config = configparser.ConfigParser()
         config.read(path)
@@ -45,16 +42,14 @@ class Logger:
             no_log = logging.getLogger(logger)
             no_log.setLevel(logging.ERROR)
 
-    def recycleLogs(self, clear: bool = False):
-        for root, dirs, files in os.walk(".\\"):
-            for file in files:
-                if file.endswith(".log"):
-                    olf = os.path.join(root, file)
-                    if clear:
-                        os.remove(olf)
-                    else:
-                        nlf = os.path.join(root, f"logger.{int(time())}.log")
-                        os.rename(olf, nlf)
+    @staticmethod
+    def recycleLogs(clear: bool = False):
+        olf = f"logs/logger.log"
+        nlf = f"logs/logger.{int(time())}.log"
+        if clear:
+            os.remove(olf)
+        else:
+            os.rename(olf, nlf)
 
     @staticmethod
     def ProcessMsg(msg: Union[str, tuple, list], kvMsg: dict, addStr: str = None) -> str:
